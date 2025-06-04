@@ -56,7 +56,11 @@ public class ClientService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        repository.deleteById(id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Client with ID " + id + " not found");
+        } else {
+            repository.deleteById(id);
+        }
     }
 
     public void dtoToEntity(ClientDTO dto, Client entity) {
