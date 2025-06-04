@@ -1,6 +1,7 @@
 package com.desouza.client.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.desouza.client.dto.ClientDTO;
 import com.desouza.client.entity.Client;
 import com.desouza.client.repository.ClientRepository;
+import com.desouza.client.service.exceptions.DataBaseException;
 import com.desouza.client.service.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -35,10 +37,15 @@ public class ClientService {
 
     @Transactional
     public ClientDTO insert(ClientDTO dto) {
-        Client entity = new Client();
-        dtoToEntity(dto, entity);
-        entity = repository.save(entity);
-        return new ClientDTO(entity);
+        try {
+            Client entity = new Client();
+            dtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Unique index or primary key violation");
+        }
     }
 
     @Transactional

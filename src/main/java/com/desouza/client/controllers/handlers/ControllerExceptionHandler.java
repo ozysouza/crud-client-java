@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.desouza.client.dto.error.CustomError;
 import com.desouza.client.dto.error.ValidationError;
+import com.desouza.client.service.exceptions.DataBaseException;
 import com.desouza.client.service.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,13 @@ public class ControllerExceptionHandler {
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             error.addError(fieldError.getField(), fieldError.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<CustomError> dataBase(DataBaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        CustomError error = new CustomError(e.getMessage(), status.value(), request.getRequestURI(), Instant.now());
         return ResponseEntity.status(status).body(error);
     }
 
