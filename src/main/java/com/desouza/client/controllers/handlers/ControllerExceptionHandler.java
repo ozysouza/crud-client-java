@@ -26,7 +26,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomError> methodArgumentNotValidException(MethodArgumentNotValidException e,
+    public ResponseEntity<CustomError> methodArgumentNotValid(MethodArgumentNotValidException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError error = new ValidationError("Invalid data", status.value(), request.getRequestURI(),
