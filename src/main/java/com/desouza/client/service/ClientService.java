@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desouza.client.dto.ClientDTO;
@@ -51,6 +52,11 @@ public class ClientService {
             throw new ResourceNotFoundException("Client with ID " + id + " not found");
         }
 
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 
     public void dtoToEntity(ClientDTO dto, Client entity) {
