@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.desouza.client.dto.ClientDTO;
 import com.desouza.client.entity.Client;
 import com.desouza.client.repository.ClientRepository;
+import com.desouza.client.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class ClientService {
@@ -24,7 +25,8 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
-        Client client = repository.findById(id).get();
+        Client client = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found!"));
         return new ClientDTO(client);
     }
 
