@@ -22,4 +22,10 @@ public class ClientService {
         return result.map(x -> new ClientDTO(x));
     }
 
+    @Transactional(readOnly = true)
+    public ClientDTO findById(Long id) {
+        Client client = repository.findById(id).get();
+        return new ClientDTO(client);
+    }
+
 }
