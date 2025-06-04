@@ -44,7 +44,7 @@ public class ClientService {
             return new ClientDTO(entity);
 
         } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Unique index or primary key violation");
+            throw new DataBaseException("Data integrity violation: possibly a duplicate CPF or invalid reference");
         }
     }
 
@@ -54,9 +54,15 @@ public class ClientService {
             Client entity = repository.getReferenceById(id);
             dtoToEntity(dto, entity);
             entity = repository.save(entity);
+
+            // Force flush to detect constraint violations early
+            repository.flush();
+
             return new ClientDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Client with ID " + id + " not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Data integrity violation: possibly a duplicate CPF or invalid reference");
         }
 
     }
