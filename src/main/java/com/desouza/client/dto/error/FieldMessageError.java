@@ -1,11 +1,11 @@
 package com.desouza.client.dto.error;
 
-public class FieldMessage {
+public class FieldMessageError {
 
     private final String fieldName;
     private final String message;
 
-    public FieldMessage(String fieldName, String message) {
+    public FieldMessageError(String fieldName, String message) {
         this.fieldName = fieldName;
         this.message = message;
     }
