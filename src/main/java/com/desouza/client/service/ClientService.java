@@ -11,6 +11,8 @@ import com.desouza.client.entity.Client;
 import com.desouza.client.repository.ClientRepository;
 import com.desouza.client.service.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ClientService {
 
@@ -26,7 +28,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
         Client client = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resource Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Client with ID " + id + " not found"));
         return new ClientDTO(client);
     }
 
@@ -40,10 +42,14 @@ public class ClientService {
 
     @Transactional
     public ClientDTO update(Long id, ClientDTO dto) {
-        Client entity = repository.getReferenceById(id);
-        dtoToEntity(dto, entity);
-        entity = repository.save(entity);
-        return new ClientDTO(entity);
+        try {
+            Client entity = repository.getReferenceById(id);
+            dtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Client with ID " + id + " not found");
+        }
 
     }
 
