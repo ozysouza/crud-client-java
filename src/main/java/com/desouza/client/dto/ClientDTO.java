@@ -27,7 +27,7 @@ public class ClientDTO {
     private Double income;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @PastOrPresent(message = "Birth Date must be in the past o in the present. YYYY-MM-DD")
+    @PastOrPresent(message = "Birth Date must be in the past or in the present. YYYY-MM-DD")
     @NotNull(message = "Birth date cannot be null")
     private LocalDate birthDate;
 
