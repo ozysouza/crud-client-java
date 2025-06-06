@@ -17,3 +17,11 @@ INSERT INTO tb_client (name, cpf, income, birth_date, children) VALUES ('Rafael 
 INSERT INTO tb_client (name, cpf, income, birth_date, children) VALUES ('Isabela Mendes', '80716253433', 4700.80, '1986-03-03', 0);
 INSERT INTO tb_client (name, cpf, income, birth_date, children) VALUES ('Thiago Costa', '70615243322', 3900.90, '1993-10-21', 1);
 
+INSERT INTO tb_department (name) VALUES ('Administrative');
+INSERT INTO tb_department (name) VALUES ('Production');
+
+INSERT INTO tb_person (name, salary, department_id) VALUES ('Ana', 5000.0, 1);
+INSERT INTO tb_person (name, salary, department_id) VALUES ('James', 4000.0, 1);
+INSERT INTO tb_person (name, salary, department_id) VALUES ('Maria', 6000.0, 2);
+INSERT INTO tb_person (name, salary, department_id) VALUES ('Bob', 3000.0, 2);
+
